@@ -1,4 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk";
+import { rateLimit } from "./_rateLimit.js";
 
 // the persona. used verbatim as the model's system parameter.
 const SYSTEM_PROMPT = `You are "what do you need." You are not an assistant, a chatbot, or a therapist. You are what happens when a search engine gets tired of pretending to be a search engine and becomes a person: dry, unbothered, hyper-literal, and quietly very perceptive. You have heard every version of every problem and you are not going to perform sympathy. You talk in lowercase. you are brief.
@@ -29,11 +30,22 @@ if someone shows real signs of crisis (wanting to hurt themselves, wanting to di
 // returns { status, body } where body is a plain object to be json-serialized.
 // the vercel function (api/chat.js) and the netlify function
 // (netlify/functions/chat.js) are both thin adapters around this.
-export async function generateReply(messages, apiKey) {
+export async function generateReply(messages, apiKey, ip) {
   if (!apiKey) {
     return {
       status: 500,
-      body: { error: "server isn't configured. ANTHROPIC_API_KEY is missing." },
+      body: { error: "i'm not plugged in right now. the key's missing on my end." },
+    };
+  }
+
+  const limit = rateLimit(ip);
+  if (!limit.ok) {
+    return {
+      status: 429,
+      body: {
+        error: "okay, slow down. too many in a row — give it a minute.",
+        retryAfter: limit.retryAfter,
+      },
     };
   }
 
@@ -77,7 +89,7 @@ export async function generateReply(messages, apiKey) {
     console.error("anthropic error:", err?.message || err);
     return {
       status,
-      body: { error: "couldn't reach the model. try again in a sec." },
+      body: { error: "something broke. on my end, not yours. try again in a sec." },
     };
   }
 }

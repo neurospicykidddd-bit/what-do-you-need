@@ -65,14 +65,14 @@ export default function App() {
       const data = await res.json().catch(() => ({}));
 
       if (!res.ok || !data.reply) {
-        setError(data.error || `something went sideways (${res.status}). try again.`);
+        setError(data.error || `something broke on my end (${res.status}). try again.`);
         setThinking(false);
         return;
       }
 
       setMessages([...next, { role: "assistant", content: data.reply }]);
     } catch {
-      setError("couldn't reach the server. check your connection and try again.");
+      setError("can't reach me right now. check your connection, then try again.");
     } finally {
       setThinking(false);
       // refocus so follow-ups feel immediate.
@@ -91,6 +91,10 @@ export default function App() {
         {!started && (
           <div className="hero">
             <h1 className="prompt">what do you need?</h1>
+            <p className="tagline">
+              not a search box. type whatever's bothering you — it names the real
+              thing and hands you the dumb, true move.
+            </p>
           </div>
         )}
 

@@ -5,6 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>what do you need?</title>
     <meta name="description" content="type in whatever's bothering you. get told the dumb true thing to do about it." />
+    <meta name="theme-color" content="#0e0e0c" />
+
+    <!-- social preview. og:image is relative so it resolves on whatever domain
+         the link is shared from (works across the vercel + netlify deploys).
+         if you settle on one primary domain, swap these to absolute urls
+         (e.g. https://yourdomain.com/og.png) for the widest scraper support. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="what do you need?" />
+    <meta property="og:description" content="type whatever's bothering you. get the dumb true move." />
+    <meta property="og:image" content="/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="what do you need?" />
+    <meta name="twitter:description" content="type whatever's bothering you. get the dumb true move." />
+    <meta name="twitter:image" content="/og.png" />
   </head>
   <body>
     <div id="root"></div>

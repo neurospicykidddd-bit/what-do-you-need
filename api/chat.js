@@ -18,9 +18,19 @@ export default async function handler(req, res) {
     }
   }
 
+  // first hop in x-forwarded-for is the client; fall back to the socket addr
+  // (local dev). used for best-effort per-ip rate limiting.
+  const fwd = req.headers?.["x-forwarded-for"];
+  const ip =
+    (typeof fwd === "string" ? fwd.split(",")[0].trim() : null) ||
+    req.headers?.["x-real-ip"] ||
+    req.socket?.remoteAddress ||
+    "unknown";
+
   const { status, body: payload } = await generateReply(
     body?.messages,
-    process.env.ANTHROPIC_API_KEY
+    process.env.ANTHROPIC_API_KEY,
+    ip
   );
   return res.status(status).json(payload);
 }

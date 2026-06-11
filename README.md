@@ -87,6 +87,31 @@ on the server and never ships to the browser.
 > (`api/chat.js` for vercel, `netlify/functions/chat.js` for netlify) are thin
 > adapters.
 
+## rate limiting
+
+the serverless function applies a best-effort per-IP limit (in `api/_rateLimit.js`):
+**10 requests/minute** and **80/hour**. over the limit returns a `429` with an
+in-voice message and a `retryAfter` (seconds). tune the numbers in `RULES`.
+
+caveat: the counter is in-memory, so it's per warm serverless instance, not a
+global guarantee — it blunts a single client hammering the endpoint without any
+extra infra. for a hard global cap, back it with a shared store (upstash redis,
+vercel kv, etc.) keyed by the same IP.
+
+## social preview (og image)
+
+the share card is `public/og.png` (1200×630), referenced by the `og:`/`twitter:`
+meta tags in `index.html`. the tags use a **relative** path so the image
+resolves on whichever domain the link is shared from (works across both
+deploys). if you pick one primary domain, switch them to absolute
+`https://yourdomain.com/og.png` for the widest scraper support.
+
+to change the design, edit `scripts/make-og.mjs` and regenerate:
+
+```sh
+npm run og
+```
+
 ## scope (v1)
 
 no login, no database, no saved history, no analytics. one persona, one

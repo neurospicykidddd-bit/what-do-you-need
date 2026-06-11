@@ -24,9 +24,19 @@ export const handler = async (event) => {
     };
   }
 
+  // netlify sets x-nf-client-connection-ip to the real client ip; fall back to
+  // the first hop of x-forwarded-for. used for best-effort rate limiting.
+  const headers = event.headers || {};
+  const fwd = headers["x-forwarded-for"];
+  const ip =
+    headers["x-nf-client-connection-ip"] ||
+    (typeof fwd === "string" ? fwd.split(",")[0].trim() : null) ||
+    "unknown";
+
   const { status, body } = await generateReply(
     parsed?.messages,
-    process.env.ANTHROPIC_API_KEY
+    process.env.ANTHROPIC_API_KEY,
+    ip
   );
 
   return {

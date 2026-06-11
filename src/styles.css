@@ -73,6 +73,14 @@ body {
   margin-left: 2px;
 }
 
+.tagline {
+  margin: 16px auto 0;
+  max-width: 30em;
+  color: var(--ink-dim);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
 @keyframes blink {
   50% {
     opacity: 0;
