@@ -59,13 +59,33 @@ request details (all server-side, in `api/chat.js`):
 to give it more bite later, change the `model` in `api/chat.js` to
 `claude-opus-4-8`.
 
-## deploy to vercel
+## deploy
 
-1. push this repo to github and import it in vercel (it auto-detects vite and
-   the `/api` function — no extra config needed).
+the frontend always calls `/api/chat`. that one path is served by a serverless
+function on whichever host you pick — the key is read from `ANTHROPIC_API_KEY`
+on the server and never ships to the browser.
+
+### netlify
+
+1. push this repo to github and import it in netlify. `netlify.toml` already
+   sets the build (`npm run build` → `dist`), the functions directory
+   (`netlify/functions`), and a redirect so `/api/chat` maps to the function.
+2. in netlify: **site configuration → environment variables**, add
+   `ANTHROPIC_API_KEY` with your `sk-ant-...` key. then **trigger a redeploy**
+   (env vars only take effect on a new build).
+3. done. the function lives in `netlify/functions/chat.js`.
+
+### vercel
+
+1. push to github and import in vercel (it auto-detects vite and the `/api`
+   function — no extra config needed).
 2. in vercel project settings → environment variables, add
    `ANTHROPIC_API_KEY`. do **not** put it in the client bundle.
 3. deploy.
+
+> both hosts share the same core logic in `api/_respond.js`; the platform files
+> (`api/chat.js` for vercel, `netlify/functions/chat.js` for netlify) are thin
+> adapters.
 
 ## scope (v1)
 

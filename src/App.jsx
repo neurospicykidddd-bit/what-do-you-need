@@ -57,7 +57,7 @@ export default function App() {
       const data = await res.json().catch(() => ({}));
 
       if (!res.ok || !data.reply) {
-        setError(data.error || "something went sideways. try again.");
+        setError(data.error || `something went sideways (${res.status}). try again.`);
         setThinking(false);
         return;
       }
