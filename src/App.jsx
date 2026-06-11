@@ -37,6 +37,14 @@ export default function App() {
     }
   }, [messages, thinking, started]);
 
+  // grow the textarea to fit its content (wrapping), capped by max-height in css.
+  useEffect(() => {
+    const el = inputRef.current;
+    if (!el) return;
+    el.style.height = "auto";
+    el.style.height = `${el.scrollHeight}px`;
+  }, [input]);
+
   async function send(text) {
     const trimmed = text.trim();
     if (!trimmed || thinking) return;
@@ -108,11 +116,19 @@ export default function App() {
         )}
 
         <form className="composer" onSubmit={onSubmit}>
-          <input
+          <textarea
             ref={inputRef}
             className="field"
             value={input}
+            rows={1}
             onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => {
+              // enter sends; shift+enter inserts a newline.
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                send(input);
+              }
+            }}
             placeholder={started ? "say more" : "type whatever's bothering you"}
             autoFocus
             autoComplete="off"

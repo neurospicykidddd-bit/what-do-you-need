@@ -161,7 +161,7 @@ body {
 /* ---- composer ---- */
 .composer {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   gap: 10px;
   border-bottom: 1px solid var(--line);
   padding-bottom: 8px;
@@ -183,6 +183,14 @@ body {
   font: inherit;
   text-transform: lowercase;
   padding: 6px 0;
+  /* textarea specifics: wrap automatically, grow with content (js sets height),
+     no manual drag handle, no internal scrollbar until the max-height cap. */
+  resize: none;
+  overflow-y: auto;
+  max-height: 40vh;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
 .field::placeholder {
@@ -196,7 +204,7 @@ body {
   font-size: 1.3rem;
   cursor: pointer;
   line-height: 1;
-  padding: 0 4px;
+  padding: 0 4px 6px;
   transition: opacity 0.15s, transform 0.15s;
 }
 
