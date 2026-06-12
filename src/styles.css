@@ -299,6 +299,7 @@ body {
   border: 1px solid var(--line);
   color: var(--ink-dim);
   font: inherit;
+  text-align: left;
   text-transform: lowercase;
   padding: 6px 12px;
   border-radius: 999px;

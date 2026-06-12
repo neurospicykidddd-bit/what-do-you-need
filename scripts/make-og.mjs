@@ -12,8 +12,9 @@ const H = 630;
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
   <rect width="${W}" height="${H}" fill="#0e0e0c"/>
   <g font-family="DejaVu Sans Mono, monospace">
-    <text x="100" y="320" font-size="84" fill="#e8e4d8" letter-spacing="-1">what do you need?<tspan fill="#d7c47a">_</tspan></text>
-    <text x="104" y="382" font-size="30" fill="#8a877c">type whatever's bothering you. get the dumb true move.</text>
+    <text x="100" y="300" font-size="84" fill="#e8e4d8" letter-spacing="-1">what do you need?<tspan fill="#d7c47a">_</tspan></text>
+    <text x="104" y="362" font-size="30" fill="#8a877c">tell us whatever's bothering you.</text>
+    <text x="104" y="404" font-size="30" fill="#8a877c">get actionable advice that actually works.</text>
   </g>
 </svg>`;
 
