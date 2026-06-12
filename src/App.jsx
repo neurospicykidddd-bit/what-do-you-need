@@ -24,6 +24,7 @@ export default function App() {
   const [input, setInput] = useState("");
   const [thinking, setThinking] = useState(false);
   const [error, setError] = useState("");
+  const [showAbout, setShowAbout] = useState(false);
   const [examples] = useState(() => pickExamples(4));
 
   const inputRef = useRef(null);
@@ -85,16 +86,50 @@ export default function App() {
     send(input);
   }
 
+  // download the conversation as a plain-text transcript.
+  function saveTranscript() {
+    if (!messages.length) return;
+    const now = new Date();
+    const lines = ["what do you need?", now.toLocaleString(), ""];
+    for (const m of messages) {
+      lines.push(`${m.role === "user" ? "you" : "it"}: ${m.content}`, "");
+    }
+    const blob = new Blob([lines.join("\n")], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const stamp = now.toISOString().slice(0, 16).replace(/[:T]/g, "-");
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `what-do-you-need-${stamp}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+
   return (
     <div className={`app ${started ? "started" : "intro"}`}>
+      <button
+        className="help"
+        type="button"
+        aria-label="what is this"
+        aria-expanded={showAbout}
+        onClick={() => setShowAbout((v) => !v)}
+      >
+        ?
+      </button>
+      {showAbout && (
+        <div className="about" role="dialog" aria-label="what is this">
+          <p>
+            not a search box. type whatever's bothering you, and it names the
+            real thing and hands you the dumb, true move.
+          </p>
+        </div>
+      )}
+
       <main className="stage">
         {!started && (
           <div className="hero">
             <h1 className="prompt">what do you need?</h1>
-            <p className="tagline">
-              not a search box. type whatever's bothering you — it names the real
-              thing and hands you the dumb, true move.
-            </p>
           </div>
         )}
 
@@ -171,7 +206,16 @@ export default function App() {
       </main>
 
       <footer className="foot">
-        <span>no logins. no history. resets on refresh.</span>
+        {started ? (
+          <span>
+            nothing's saved here.{" "}
+            <button className="save" type="button" onClick={saveTranscript}>
+              save this
+            </button>
+          </span>
+        ) : (
+          <span>no logins. no history. resets on refresh.</span>
+        )}
       </footer>
     </div>
   );

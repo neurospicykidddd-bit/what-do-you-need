@@ -43,7 +43,7 @@ export async function generateReply(messages, apiKey, ip) {
     return {
       status: 429,
       body: {
-        error: "okay, slow down. too many in a row — give it a minute.",
+        error: "okay, slow down. too many in a row. give it a minute.",
         retryAfter: limit.retryAfter,
       },
     };

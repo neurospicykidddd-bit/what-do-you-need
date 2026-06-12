@@ -73,12 +73,66 @@ body {
   margin-left: 2px;
 }
 
-.tagline {
-  margin: 16px auto 0;
-  max-width: 30em;
+/* "what is this": a quiet ? in the corner that reveals the blurb on tap */
+.help {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 10;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--bg);
   color: var(--ink-dim);
-  font-size: 0.9rem;
+  font: inherit;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.help:hover,
+.help[aria-expanded="true"] {
+  border-color: var(--accent);
+  color: var(--ink);
+}
+
+.about {
+  position: fixed;
+  top: 54px;
+  right: 16px;
+  z-index: 10;
+  max-width: 18rem;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+
+.about p {
+  color: var(--ink-dim);
+  font-size: 0.85rem;
   line-height: 1.5;
+}
+
+.save {
+  background: transparent;
+  border: none;
+  color: var(--ink-dim);
+  font: inherit;
+  font-size: inherit;
+  text-transform: lowercase;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.save:hover {
+  color: var(--accent);
 }
 
 @keyframes blink {
