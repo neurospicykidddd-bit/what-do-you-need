@@ -130,6 +130,7 @@ export default function App() {
         {!started && (
           <div className="hero">
             <h1 className="prompt">what do you need?</h1>
+            <p className="subhero">the dumb fix that actually works</p>
           </div>
         )}
 
